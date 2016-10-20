@@ -1,0 +1,7 @@
+*.swp
+*~
+*.o
+*.txt
+gen_testcase
+mergesort_opt
+mergesort_orig

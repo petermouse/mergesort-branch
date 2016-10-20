@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include IMPL
+
 static double diff_in_second(struct timespec t1, struct timespec t2)
 {
     struct timespec diff;
@@ -15,32 +17,19 @@ static double diff_in_second(struct timespec t1, struct timespec t2)
     return (diff.tv_sec + diff.tv_nsec / 1000000000.0);
 }
 
-void merge(int src1[], int src2[], int dst[], int n)
-{
-    int i1 = 0, i2 = 0, id = 0;
-    while (i1 < n && i2 < n) {
-        if (src1[i1] < src2[i2])
-            dst[id++] = src1[i1++];
-        else
-            dst[id++] = src2[i2++];
-    }
-    while (i1 < n)
-        dst[id++] = src1[i1++];
-    while (i2 < n)
-        dst[id++] = src2[i2++];
-}
 int main()
 {
     int number;
-    int i;
     struct timespec start,end;
-    double cpu_time;
-    FILE *fp = fopen("testcase.txt","r");
-    if( fp == NULL ) {
+    double orig_time,opt_time;
+    FILE *time_out;
+    FILE *result_out;
+    FILE *src_file = fopen("testcase.txt","r");
+    if( src_file == NULL ) {
         printf("Can't open the file\n");
         return -1;
     }
-    fscanf(fp,"%d",&number);
+    fscanf(src_file,"%d",&number);
     int* src1 = (int *)malloc(sizeof(int)*number);
     if( src1 == NULL ) {
         printf("Can't allocate memory\n");
@@ -57,17 +46,44 @@ int main()
         return -1;
     }
 
-    for(i=0; i<number; i++)
-        fscanf(fp,"%d",&src1[i]);
-    for(i=0; i<number; i++)
-        fscanf(fp,"%d",&src2[i]);
+    for(int i=0; i<number; i++)
+        fscanf(src_file,"%d",&src1[i]);
+    for(int i=0; i<number; i++)
+        fscanf(src_file,"%d",&src2[i]);
 
+    fclose(src_file);
+
+#ifndef OPT
     clock_gettime(CLOCK_MONOTONIC_RAW, &start);
     merge(src1,src2,dst,number);
     clock_gettime(CLOCK_MONOTONIC_RAW, &end);
 
-    cpu_time = diff_in_second(start,end);
-    printf("execution time: %lf\n",cpu_time);
+    orig_time = diff_in_second(start,end);
+    time_out=fopen("orig.txt","a");
+    fprintf(time_out,"%lf\n",orig_time);
+    fclose(time_out);
+
+    printf("execution time: %lf\n",orig_time);
+#else
+    clock_gettime(CLOCK_MONOTONIC_RAW, &start);
+    merge(src1,src2,dst,number);
+    clock_gettime(CLOCK_MONOTONIC_RAW, &end);
+
+    opt_time = diff_in_second(start,end);
+    time_out=fopen("opt.txt","a");
+    fprintf(time_out,"%lf\n",opt_time);
+    fclose(time_out);
+ 
+    printf("executon time: %lf\n",opt_time);
+#endif
+
+    result_out=fopen("result.txt","w");
+    number*=2;
+    for(int i=0;i<number;i++)
+        fprintf(result_out,"%d ",dst[i]);
+    free(src1);
+    free(src2);
+    free(dst);
 
     return 0;
 }
