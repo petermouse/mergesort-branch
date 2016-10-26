@@ -16,6 +16,7 @@ int main(int argc,char* argv[])
     int src1_range = atoi (argv[2]);
     int src2_range = atoi (argv[3]);
     int i;
+    int divisor;
     FILE *fp = fopen("testcase.txt","w");
     if(fp == NULL) {
         printf("Can't not open a file\n");
@@ -29,8 +30,15 @@ int main(int argc,char* argv[])
     srand(time (NULL));
     fprintf(fp,"%d\n",number);
 
+
+    divisor=RAND_MAX/(src1_range+1);
+
     for(i=0; i<number; i++)
-        arr[i]=rand()%src1_range;
+    {
+        do{
+        arr[i]=rand()/divisor;
+        }while(arr[i]>src1_range);
+    }
 
     qsort(arr,number,sizeof(int),compare);
 
@@ -39,8 +47,14 @@ int main(int argc,char* argv[])
 
     fprintf(fp,"\n");
 
+    divisor=RAND_MAX/(src2_range+1);
+
     for(i=0; i<number; i++)
-        arr[i]=rand()%src2_range;
+    {
+        do{
+            arr[i]=rand()/divisor;
+        }while(arr[i]>src2_range);
+    }
 
     qsort(arr,number,sizeof(int),compare);
 

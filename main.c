@@ -77,7 +77,7 @@ int main()
     printf("executon time: %lf\n",opt_time);
 #endif
 
-    result_out=fopen("result.txt","w");
+    result_out=fopen("merge_ans.txt","w");
     number*=2;
     for(int i=0;i<number;i++)
         fprintf(result_out,"%d ",dst[i]);
