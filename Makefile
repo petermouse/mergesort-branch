@@ -1,19 +1,20 @@
 CC ?= gcc
-CFLAGS ?= -O0 -Wall -std=gnu99
+COPTLV ?= -O0
+CFLAGS ?=  -Wall -std=gnu99
 SRCS = main.c
-COUNT ?=100
+COUNT ?=25
 EXEC = mergesort_orig mergesort_opt gen_testcase calc
-NUM ?=1000000
-S1_RANGE ?=1000000000
-S2_RANGE ?=1000000000
+#NUM ?=1000000
+#S1_RANGE ?=1000000000
+#S2_RANGE ?=1000000000
 
 all: $(EXEC)
 
 mergesort_orig: $(SRCS) mergesort_orig.h mergesort_orig.c
-	$(CC) $(CFLAGS) -DIMPL="\"$@.h\"" -o $@ $(SRCS) $@.c
+	$(CC) $(COPTLV) $(CFLAGS) -DIMPL="\"$@.h\"" -o $@ $(SRCS) $@.c
 
 mergesort_opt: $(SRCS) mergesort_opt.h mergesort_opt.c
-	$(CC) $(CFLAGS) -DIMPL="\"$@.h\"" -o $@ $(SRCS) $@.c
+	$(CC) $(COPTLV) $(CFLAGS) -DIMPL="\"$@.h\"" -o $@ $(SRCS) $@.c
 
 gen_testcase: gen_testcase.c 
 	$(CC) $(CFLAGS) -o $@ $@.c

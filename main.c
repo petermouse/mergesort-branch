@@ -64,6 +64,7 @@ int main()
     fclose(time_out);
 
     printf("execution time: %lf\n",orig_time);
+    result_out = fopen("ans_orig.txt","w");
 #else
     clock_gettime(CLOCK_MONOTONIC_RAW, &start);
     merge(src1,src2,dst,number);
@@ -75,9 +76,9 @@ int main()
     fclose(time_out);
  
     printf("executon time: %lf\n",opt_time);
+    result_out = fopen("ans_opt.txt","w");
 #endif
 
-    result_out=fopen("merge_ans.txt","w");
     number*=2;
     for(int i=0;i<number;i++)
         fprintf(result_out,"%d ",dst[i]);
