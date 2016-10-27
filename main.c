@@ -21,7 +21,7 @@ int main()
 {
     int number;
     struct timespec start,end;
-    double orig_time,opt_time;
+    double cpu_time;
     FILE *time_out;
     FILE *result_out;
     FILE *src_file = fopen("testcase.txt","r");
@@ -58,24 +58,24 @@ int main()
     merge(src1,src2,dst,number);
     clock_gettime(CLOCK_MONOTONIC_RAW, &end);
 
-    orig_time = diff_in_second(start,end);
+    cpu_time = diff_in_second(start,end);
     time_out=fopen("orig.txt","a");
-    fprintf(time_out,"%lf\n",orig_time);
+    fprintf(time_out,"%lf\n",cpu_time);
     fclose(time_out);
 
-    printf("execution time: %lf\n",orig_time);
+    printf("execution time: %lf\n",cpu_time);
     result_out = fopen("ans_orig.txt","w");
 #else
     clock_gettime(CLOCK_MONOTONIC_RAW, &start);
     merge(src1,src2,dst,number);
     clock_gettime(CLOCK_MONOTONIC_RAW, &end);
 
-    opt_time = diff_in_second(start,end);
+    cpu_time = diff_in_second(start,end);
     time_out=fopen("opt.txt","a");
-    fprintf(time_out,"%lf\n",opt_time);
+    fprintf(time_out,"%lf\n",cpu_time);
     fclose(time_out);
  
-    printf("executon time: %lf\n",opt_time);
+    printf("executon time: %lf\n",cpu_time);
     result_out = fopen("ans_opt.txt","w");
 #endif
 

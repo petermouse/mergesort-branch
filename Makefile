@@ -2,7 +2,7 @@ CC ?= gcc
 COPTLV ?= -O0
 CFLAGS ?=  -Wall -std=gnu99
 SRCS = main.c
-COUNT ?=25
+COUNT ?=100
 EXEC = mergesort_orig mergesort_opt gen_testcase calc
 #NUM ?=1000000
 #S1_RANGE ?=1000000000
